@@ -1,0 +1,30 @@
+<h1>Comment</h1>
+<form>
+  <div class="form-group">
+    {{#each errors.messages as |message|}}
+  <span class="help-block">{{message}}</span>
+{{/each}}
+</div>
+  {{#unless model.blog}}
+  <div class="form-group {{if errors.blog 'has-error'}}">
+        <label for="Blog">Blog</label>
+        {{#power-select searchPlaceholder="Blogs search..." placeholder="Blogs search..." loadingMessage="wait..." search=(action "searchBlog") selected=selected onchange=(action "chooseBlog") as |blog|}}
+       {{blog.title}}
+     {{/power-select}}
+    </div>
+{{/unless}}
+  <div class="form-group {{if errors.created_at 'has-error'}}">
+ {{bs-datetimepicker type="date" required="required" date=model.created_at pickTime=true forceDateOutput=true format='YYYY-MM-DD HH:mm:00' updateDate=(action (mut model.created_at))}}
+  </div>
+    <div class="form-group"> {{moment-from-now model.created_at}}</div>
+  <div class="form-group {{if errors.body 'has-error'}}">
+    <label for="body">Body</label>
+    {{textarea value=model.body required="required" class="form-control" id="body" rows="5"}}
+  </div>
+  {{#unless model.isNew}}
+  <button class="btn btn-primary" {{action 'update' model }}>Update</button>
+  <button class="btn btn-danger" {{action 'delete' model }}>Delete</button>
+  {{else}}
+  <button class="btn btn-primary" {{action 'add' model }}>Add</button>
+  {{/unless}}
+</form>

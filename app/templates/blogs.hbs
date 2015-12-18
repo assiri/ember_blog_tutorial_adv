@@ -1,0 +1,23 @@
+<div class="row">
+  <div class="col-sm-4">
+{{#link-to "blogs.new" class="btn btn-primary btn-block"}} Add new Blog{{/link-to}}
+<ul class="list-group">
+{{#each model as |blog|}}
+{{#unless blog.isNew}}
+{{#link-to 'blogs.blog' blog}} {{blog.title}} {{/link-to}}
+<div class="well">{{markdown-section content=blog.body}} <small>{{moment-from-now blog.created_at}}</small></div>
+<ol>
+  {{#each blog.comments as |comment|}}
+{{#link-to 'comments.comment' comment tagName="li"}}<a href>{{comment.body}}</a>{{/link-to}}
+{{/each}}
+<span {{ action "newcomment" blog.id class="btn btn-primary btn-block"}} class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+</ol>
+{{/unless}}
+{{/each}}
+</ul>
+{{infinity-loader infinityModel=model loadingText="Loading..." loadedText="All Loaded!"}}
+  </div>
+  <div class="col-sm-8">
+    {{outlet}}
+  </div>
+</div>

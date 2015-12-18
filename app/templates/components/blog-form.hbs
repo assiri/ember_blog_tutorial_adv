@@ -1,0 +1,27 @@
+<h1>Blog</h1>
+<form>
+  <div class="form-group">
+    {{#each errors.messages as |message|}}
+  <span class="help-block">{{message}}</span>
+{{/each}}
+</div>
+ <div class="form-group {{if errors.title 'has-error'}}">
+    <label for="title">Title</label>
+    {{input value=model.title id="title" class="form-control"}}
+  </div>
+  <div class="form-group {{if errors.created_at 'has-error'}}">
+ {{bs-datetimepicker type="date" date=model.created_at pickTime=true forceDateOutput=true format='YYYY-MM-DD HH:mm:00' updateDate=(action (mut model.created_at))}}
+  </div>
+    <div class="form-group"> {{moment-from-now model.created_at}}</div>
+    <div class="form-group {{if errors.body 'has-error'}}">
+    <label for="body">Body</label>
+    {{textarea value=model.body  class="form-control" id="body" rows="15"}}
+  </div>
+  <div class="form-group">{{markdown-section content=model.body}} </div>
+  {{#unless model.isNew}}
+  <button class="btn btn-primary" {{action 'update' model }}>Update</button>
+  <button class="btn btn-danger" {{action 'delete' model }}>Delete</button>
+  {{else}}
+  <button class="btn btn-primary" {{action 'add' model}}>Add</button>
+  {{/unless}}
+</form>
